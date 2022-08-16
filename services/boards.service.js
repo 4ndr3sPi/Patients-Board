@@ -1,16 +1,26 @@
 const boardModel = require('../models/board.model.js');   
 const {filterUsers} = require('../services/users.service.js');
-
+const {addBoardUser} = require('../services/boardsusers.service.js');
+//const boardUserAdd= {};
 
 async function addBoard(data) {
     const user= await filterUsers(data.idUser);
     const newBoard = new boardModel({
         idUser: data.idUser,
-        boardTitle: data.boardTitle,
-        //owner: user  
+        boardTitle: data.boardTitle,  
     });
-    return await newBoard.save()
+    
+    // save new boardUser object   
+    const idBoard = (newBoard._id);
+    const idUser = (newBoard.idUser);
+    const newData={idBoard,idUser};
+    const nbu = await addBoardUser(newData);
+
+    return await newBoard.save();
+   
 } 
+
+
 
 async function allBoards() {
     const showBoards = await boardModel.find({}).populate('boardTitle').populate('idUser');

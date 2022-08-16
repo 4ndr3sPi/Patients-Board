@@ -1,7 +1,10 @@
 const boardUserModel = require('../models/boardUser.model.js');
 
 async function addBoardUser(data) {
-    const boardUserAdd = new boardUserModel({...data});
+    const boardUserAdd = new boardUserModel({
+        idBoard: data.idBoard,
+        idUser: data.idUser,
+    });
     return await boardUserAdd.save()
 } 
 
